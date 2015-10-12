@@ -1,0 +1,156 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example</groupId>
+  <artifactId>akka-http-example</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <!-- Scala -->
+    <scala.version>2.11.7</scala.version>
+    <scala.binary.version>2.11</scala.binary.version>
+
+    <!-- Akka -->
+    <akka.streams.version>1.0</akka.streams.version>
+    <akka.version>2.3.12</akka.version>
+
+    <!-- ScalaTest -->
+    <scalatest.version>2.2.4</scalatest.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-http-experimental_${scala.binary.version}</artifactId>
+      <version>${akka.streams.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-http-spray-json-experimental_${scala.binary.version}</artifactId>
+      <version>${akka.streams.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-http-xml-experimental_${scala.binary.version}</artifactId>
+      <version>${akka.streams.version}</version>
+    </dependency>
+
+    <!-- testing -->
+    <dependency>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-http-testkit-experimental_${scala.binary.version}</artifactId>
+      <version>${akka.streams.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest_${scala.binary.version}</artifactId>
+      <version>${scalatest.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- Maven profiles allow you to support both Scala 2.10 and Scala 2.11 with
+    the right dependencies for modules specified for each version separately -->
+  <profiles>
+    <profile>
+      <id>scala-${scala.binary.version}</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+
+      <properties>
+        <scalaVersion>${scala.version}</scalaVersion>
+        <scalaBinaryVersion>${scala.binary.version}</scalaBinaryVersion>
+      </properties>
+
+      <dependencies>
+
+        <!-- Scala Library -->
+        <dependency>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-library</artifactId>
+          <version>${scalaVersion}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.scala-lang.modules</groupId>
+          <artifactId>scala-xml_${scalaBinaryVersion}</artifactId>
+          <version>1.0.3</version>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>scala-2.10</id>
+      <properties>
+        <scalaVersion>2.10.4</scalaVersion>
+        <scalaBinaryVersion>2.10</scalaBinaryVersion>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-library</artifactId>
+          <version>${scalaVersion}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+
+  <build>
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>3.1.6</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <args>
+            <!-- work-around for https://issues.scala-lang.org/browse/SI-8358 -->
+            <arg>-nobootcp</arg>
+          </args>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>com.example.ExampleServer</mainClass>
+          <arguments/>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <developers>
+    <developer>
+      <id>ktoso</id>
+      <name>Konrad Malawski</name>
+      <email>ktoso@typesafe.com</email>
+    </developer>
+  </developers>
+  
+</project>
