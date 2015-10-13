@@ -30,7 +30,7 @@ class ExampleRoutesSpec extends WordSpec with Matchers // pick a ScalaTest match
     "handle internal failure nicely" in {
       Get("/crash") ~> testRoutes ~> check {
         status shouldEqual StatusCodes.InternalServerError
-        responseAs[String] shouldEqual "PONG!"
+        responseAs[String] shouldEqual "There was an internal server error."
       }
     }
 

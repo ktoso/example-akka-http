@@ -3,6 +3,11 @@ Akka HTTP example using Maven and Scala
 
 This is an example app showing how to use Akka HTTP with Maven and Scala (and ScalaTest).
 
+Building docker container
+-------------------------
+
+Simply do `sbt docker:publishLocal`
+
 Running
 -------
 
